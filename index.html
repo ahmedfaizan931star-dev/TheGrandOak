@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grand Oak | Fine Dining Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #faf9f7;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f5f2ed;
+            --text-primary: #1a1815;
+            --text-secondary: #5a5551;
+            --text-muted: #9a9387;
+            --accent-primary: #b89b6a;
+            --accent-secondary: #8b7355;
+            --border-light: #e8e3dd;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--accent-primary);
+            color: #ffffff;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* VOLT Mandatory Scroll Reveal Standard */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        [data-reveal].is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            [data-reveal] {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        nav.scrolled {
+            padding: 14px 0;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .logo span {
+            color: var(--accent-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: var(--transition);
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a:focus-visible::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
+        .mobile-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: var(--transition);
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 650px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg-wrapper {
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        .hero-bg {
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1414235077428-3387e1f4f834?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(15, 12, 8, 0.45), rgba(15, 12, 8, 0.75));
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: white;
+            max-width: 820px;
+            padding: 0 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 13px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #dfc293;
+        }
+
+        .hero-title {
+            font-size: clamp(44px, 7vw, 80px);
+            margin-bottom: 24px;
+            font-weight: 400;
+            line-height: 1.08;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .hero-description {
+            font-size: clamp(16px, 2vw, 20px);
+            margin-bottom: 40px;
+            opacity: 0.95;
+            line-height: 1.7;
+            font-weight: 300;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 42px;
+            background: var(--accent-primary);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(184, 155, 106, 0.35);
+        }
+
+        .cta-button:hover,
+        .cta-button:focus-visible {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 115, 85, 0.45);
+            outline: none;
+        }
+
+        /* Metrics Signature Counter Bar */
+        .metrics-bar {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+            padding: 40px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .metric-item {
+            padding: 12px;
+        }
+
+        .metric-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 600;
+            color: var(--accent-primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* About Section */
+        .about {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: clamp(36px, 5vw, 48px);
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+
+        .about-text p {
+            margin-bottom: 24px;
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-img-2 {
+            position: absolute;
+            bottom: -40px;
+            right: -30px;
+            width: 280px;
+            height: 360px;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            border: 8px solid var(--bg-secondary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Menu Section */
+        .menu {
+            padding: 120px 0;
+            background: var(--bg-primary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--accent-primary);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: clamp(36px, 5vw, 56px);
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        .section-description {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 620px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+        }
+
+        .menu-item {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .menu-item-image {
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .menu-item:hover img {
+            transform: scale(1.06);
+        }
+
+        .menu-item-content {
+            padding: 28px;
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .menu-item-title {
+            font-size: 20px;
+            color: var(--text-primary);
+        }
+
+        .menu-item-price {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .menu-item-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--bg-tertiary);
+            color: var(--accent-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 20px;
+        }
+
+        .order-btn {
+            background: transparent;
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .order-btn:hover,
+        .order-btn:focus-visible {
+            background: var(--accent-primary);
+            color: white;
+            outline: none;
+        }
+
+        /* Contact & Reservation Section */
+        .contact {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .contact-info h3 {
+            font-size: 26px;
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+
+        .contact-details {
+            margin-bottom: 40px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-primary);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .contact-item h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .contact-item p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .contact-form {
+            background: var(--bg-primary);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(184, 155, 106, 0.15);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(184, 155, 106, 0.25);
+        }
+
+        .submit-btn:hover,
+        .submit-btn:focus-visible {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(139, 115, 85, 0.35);
+            outline: none;
+        }
+
+        .status-message {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+
+        .status-message.success {
+            display: block;
+            background: #eef7f2;
+            color: #1e7e46;
+            border: 1px solid #c8e6d5;
+        }
+
+        /* Toast Notice */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--text-primary);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: #12100e;
+            color: white;
+            padding: 80px 0 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand h3 {
+            font-size: 26px;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            max-width: 320px;
+            font-size: 14px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social button {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .footer-social button:hover,
+        .footer-social button:focus-visible {
+            background: var(--accent-primary);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            margin-bottom: 24px;
+            color: white;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links a,
+        .footer-links button {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 2.3;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            display: block;
+        }
+
+        .footer-links a:hover,
+        .footer-links button:hover,
+        .footer-links a:focus-visible,
+        .footer-links button:focus-visible {
+            color: var(--accent-primary);
+            padding-left: 6px;
+            outline: none;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 32px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .about-img-2 {
+                position: relative;
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 300px;
+                margin-top: -60px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .nav-links.mobile-open {
+                display: flex;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 24px;
+                box-shadow: var(--shadow-lg);
+                border-bottom: 1px solid var(--border-light);
+                gap: 20px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-brand p {
+                margin: 0 auto 24px;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-links button,
+            .footer-links a {
+                text-align: center;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-container">
+                <a href="#home" class="logo">The <span>Grand</span> Oak</a>
+                
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home" class="nav-item">Home</a></li>
+                    <li><a href="#about" class="nav-item">About</a></li>
+                    <li><a href="#menu" class="nav-item">Menu</a></li>
+                    <li><a href="#contact" class="nav-item">Reservations</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-bg-wrapper" id="heroBgWrapper">
+            <div class="hero-bg"></div>
+        </div>
+        <div class="hero-content" data-reveal>
+            <p class="hero-subtitle">Welcome to Excellence</p>
+            <h1 class="hero-title">The Grand Oak</h1>
+            <p class="hero-description">
+                An exceptional dining experience where culinary artistry meets warm hospitality. 
+                Discover handcrafted dishes created from the finest seasonal ingredients.
+            </p>
+            <a href="#contact" class="cta-button">Reserve Your Table</a>
+        </div>
+    </section>
+
+    <!-- Signature Counter Metrics Bar -->
+    <section class="metrics-bar" data-reveal>
+        <div class="container">
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-number" data-target="15" data-suffix="+">0</div>
+                    <div class="metric-label">Years of Mastery</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-number" data-target="3" data-suffix=" Stars">0</div>
+                    <div class="metric-label">Michelin Recognized</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-number" data-target="45" data-suffix="k+">0</div>
+                    <div class="metric-label">Guests Welcomed</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-number" data-target="100" data-suffix="%">0</div>
+                    <div class="metric-label">Organic Sourced</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about" data-reveal>
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text" data-reveal>
+                    <h2>Our Story</h2>
+                    <p>
+                        Founded in 2009, The Grand Oak began as a humble dream to create a sanctuary 
+                        where food becomes art and every meal tells a memorable story. Our journey started in a 
+                        small kitchen fueled by passion and dedication.
+                    </p>
+                    <p>
+                        Today, we stand as a beacon of culinary excellence, welcoming guests 
+                        from around the world to experience moments that transcend the ordinary. 
+                        Our philosophy remains unchanged: fresh local ingredients, refined classical techniques, 
+                        and an unwavering commitment to genuine hospitality.
+                    </p>
+                    <p>
+                        Every dish is prepared with precision and care, every detail considered, 
+                        and every flavor balanced to perfection. Welcome to where tradition meets 
+                        innovation.
+                    </p>
+                </div>
+                <div class="about-image" data-reveal>
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad8876?auto=format&fit=crop&q=80&w=800" alt="Elegant restaurant interior" class="about-img" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&q=80&w=400" alt="Gourmet dish presentation" class="about-img-2" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="menu" data-reveal>
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <p class="section-subtitle">Culinary Creations</p>
+                <h2 class="section-title">A Tasting Experience</h2>
+                <p class="section-description">
+                    Each plate is a masterpiece, crafted with seasonal ingredients and 
+                    inspired by global fine dining traditions.
+                </p>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-item" data-reveal>
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&q=80&w=600" alt="Truffle Risotto" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3 class="menu-item-title">Truffle Risotto</h3>
+                            <div class="menu-item-price">$28</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Creamy Arborio rice infused with white truffle oil, finished with aged Parmesan and wild woodland mushrooms.
+                        </p>
+                        <div class="menu-item-footer">
+                            <span class="menu-item-tag">First Course</span>
+                            <button class="order-btn" data-dish="Truffle Risotto">Request Dish</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-reveal>
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=600" alt="Dry-Aged Beef" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3 class="menu-item-title">Dry-Aged Prime Rib</h3>
+                            <div class="menu-item-price">$48</div>
+                        </div>
+                        <p class="menu-item-description">
+                            45-day dry-aged prime beef cut, seared to perfection, served with roasted shallot jus and smoked potatoes.
+                        </p>
+                        <div class="menu-item-footer">
+                            <span class="menu-item-tag">Main Course</span>
+                            <button class="order-btn" data-dish="Dry-Aged Prime Rib">Request Dish</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-reveal>
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&q=80&w=600" alt="Seafood Paella" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3 class="menu-item-title">Pan-Seared Halibut</h3>
+                            <div class="menu-item-price">$42</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Fresh wild halibut served over saffron corn purée, heirloom baby carrots, and lemon-herb reduction.
+                        </p>
+                        <div class="menu-item-footer">
+                            <span class="menu-item-tag">Specialties</span>
+                            <button class="order-btn" data-dish="Pan-Seared Halibut">Request Dish</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-reveal>
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&q=80&w=600" alt="Chocolate Souffle" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3 class="menu-item-title">Grand Chocolate Soufflé</h3>
+                            <div class="menu-item-price">$18</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Valrhona dark chocolate soufflé served warm with Tahitian vanilla bean ice cream and gold leaf finish.
+                        </p>
+                        <div class="menu-item-footer">
+                            <span class="menu-item-tag">Dessert</span>
+                            <button class="order-btn" data-dish="Grand Chocolate Soufflé">Request Dish</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-reveal>
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=600" alt="Artisanal Garden Salad" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3 class="menu-item-title">Heirloom Garden Salad</h3>
+                            <div class="menu-item-price">$16</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Locally harvested microgreens, compressed watermelon, goat cheese mousse, and elderflower dressing.
+                        </p>
+                        <div class="menu-item-footer">
+                            <span class="menu-item-tag">Starters</span>
+                            <button class="order-btn" data-dish="Heirloom Garden Salad">Request Dish</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-reveal>
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=600" alt="Smoked Old Fashioned" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3 class="menu-item-title">Smoked Oak Old Fashioned</h3>
+                            <div class="menu-item-price">$20</div>
+                        </div>
+                        <p class="menu-item-description">
+                            Bourbon infused with toasted oak, aromatic house bitters, and a flamed orange peel smoke cloud.
+                        </p>
+                        <div class="menu-item-footer">
+                            <span class="menu-item-tag">Beverages</span>
+                            <button class="order-btn" data-dish="Smoked Oak Old Fashioned">Request Dish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact" data-reveal>
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <p class="section-subtitle">Reservations & Contact</p>
+                <h2 class="section-title">Join Us For Dinner</h2>
+                <p class="section-description">
+                    We invite you to reserve your table in advance. For private dining or special arrangements, please reach out directly.
+                </p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info" data-reveal>
+                    <h3>Visit Our Dining Room</h3>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <div>
+                                <h4>Address</h4>
+                                <p>123 Culinary Lane, Manhattan<br>New York, NY 10001</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+1 (555) 839-2000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <div>
+                                <h4>Email</h4>
+                                <p>concierge@thegrandoak.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h4>Hours</h4>
+                                <p>Tue - Sun: 5:00 PM - 11:00 PM<br>Closed Mondays</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Follow Our Journey</h3>
+                    <div class="footer-social" style="margin-top: 16px;">
+                        <button type="button" class="social-btn" data-platform="Instagram" aria-label="Instagram">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.359 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.362-.2 6.78-2.618 6.98-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.2-4.359-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="social-btn" data-platform="Facebook" aria-label="Facebook">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956 0.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="social-btn" data-platform="Twitter" aria-label="Twitter">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.953 4.529c-.885.389-1.83.654-2.825.775 1.014-.609 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.728 8.089 4.1 6.127 1.671 3.149c-.397.69-.625 1.491-.625 2.354 0 1.62.823 3.047 2.072 3.891-.764-.025-1.482-.234-2.11-.583v.061c.001 2.285 1.627 4.184 3.779 4.618-.397.106-.81.162-1.234.162-.304 0-.598-.028-.886-.082.599 1.867 2.332 3.221 4.384 3.259-1.665 1.305-3.764 2.086-6.04 2.086-.39 0-.779-.023-1.17-.067 2.168 1.389 4.747 2.197 7.516 2.197 9.021 0 13.966-7.477 13.966-13.967 0-.213 0-.426-.015-.637.961-.694 1.8-1.562 2.46-2.549z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="contact-form" data-reveal>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Eleanor Vance" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="eleanor@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="guests">Party Size</label>
+                            <select id="guests" name="guests" class="form-control">
+                                <option value="2 Guests">2 Guests</option>
+                                <option value="3-4 Guests">3 - 4 Guests</option>
+                                <option value="5-8 Guests">5 - 8 Guests</option>
+                                <option value="Private Dining">Private Dining (9+ Guests)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="date">Preferred Date</label>
+                            <input type="date" id="date" name="date" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Special Notes / Dietary Requests</label>
+                            <textarea id="message" name="message" class="form-control" placeholder="Anniversary, allergy considerations, or wine preferences..." rows="3"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" id="submitBtn">Request Reservation</button>
+                        <div id="statusMessage" class="status-message"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>The Grand Oak</h3>
+                    <p>
+                        Refined gastronomy crafted with passion and local integrity. 
+                        Join us for an indelible journey of sensory delight.
+                    </p>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#contact">Reservations</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Private Events</h4>
+                    <ul class="footer-links">
+                        <li><button type="button" class="info-action" data-topic="Wine Cellar Tastings">Wine Cellar Tastings</button></li>
+                        <li><button type="button" class="info-action" data-topic="Chef's Table Experience">Chef's Table Experience</button></li>
+                        <li><button type="button" class="info-action" data-topic="Private Dining Hall">Private Dining Hall</button></li>
+                        <li><button type="button" class="info-action" data-topic="Catering & Gala Services">Catering & Gala Services</button></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Hours & Info</h4>
+                    <ul class="footer-links">
+                        <li><button type="button" class="info-action" data-topic="Dress Code: Smart Elegant">Dress Code: Smart Elegant</button></li>
+                        <li><button type="button" class="info-action" data-topic="Valet Parking Available">Valet Parking Available</button></li>
+                        <li><button type="button" class="info-action" data-topic="Sommelier Selection">Sommelier Selection</button></li>
+                        <li><button type="button" class="info-action" data-topic="Gift Certificates">Gift Certificates</button></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p id="copyrightText"></p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set dynamic copyright safely without unsafe innerHTML
+            const copyrightText = document.getElementById('copyrightText');
+            if (copyrightText) {
+                const currentYear = new Date().getFullYear();
+                copyrightText.textContent = `© ${currentYear} The Grand Oak Fine Dining. All rights reserved. | Privacy Policy | Terms of Service`;
+            }
+
+            // Toast helper
+            const toast = document.getElementById('toast');
+            function showToast(message) {
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3500);
+            }
+
+            // Mobile Menu Toggle using addEventListener
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (mobileToggle && navLinks) {
+                mobileToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('mobile-open');
+                });
+            }
+
+            // Close mobile menu when nav item clicked
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    if (navLinks) navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            // Navbar scroll background change
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 40) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }, { passive: true });
+
+            // Signature Parallax Hero Effect (VOLT Standard)
+            const heroBgWrapper = document.getElementById('heroBgWrapper');
+            let ticking = false;
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.pageYOffset;
+                        if (heroBgWrapper && scrolled < 1200) {
+                            heroBgWrapper.style.transform = `translateY(${scrolled * 0.18}px)`;
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            // VOLT Standard: Scroll-Reveal via IntersectionObserver [data-reveal]
+            const revealElements = document.querySelectorAll('[data-reveal]');
+            const revealObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach((entry, idx) => {
+                    if (entry.isIntersecting) {
+                        // Stagger sequence delay for grids
+                        const delay = entry.target.classList.contains('menu-item') ? (idx % 3) * 90 : 0;
+                        setTimeout(() => {
+                            entry.target.classList.add('is-visible');
+                        }, delay);
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // Signature Animated Count-Up Metrics
+            const metricNumbers = document.querySelectorAll('.metric-number');
+            let metricsAnimated = false;
+
+            const metricsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !metricsAnimated) {
+                        metricsAnimated = true;
+                        metricNumbers.forEach(numEl => {
+                            const target = parseInt(numEl.getAttribute('data-target') || '0', 10);
+                            const suffix = numEl.getAttribute('data-suffix') || '';
+                            let current = 0;
+                            const step = Math.max(1, Math.floor(target / 40));
+                            const timer = setInterval(() => {
+                                current += step;
+                                if (current >= target) {
+                                    current = target;
+                                    clearInterval(timer);
+                                }
+                                numEl.textContent = `${current}${suffix}`;
+                            }, 35);
+                        });
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            const metricsBar = document.querySelector('.metrics-bar');
+            if (metricsBar) metricsObserver.observe(metricsBar);
+
+            // Form Submit Handling
+            const contactForm = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const statusMessage = document.getElementById('statusMessage');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const nameInput = document.getElementById('name');
+                    const emailInput = document.getElementById('email');
+                    const dateInput = document.getElementById('date');
+
+                    if (!nameInput.value || !emailInput.value || !dateInput.value) {
+                        showToast('Please fill in all required reservation fields.');
+                        return;
+                    }
+
+                    submitBtn.textContent = 'Processing Reservation...';
+                    submitBtn.disabled = true;
+
+                    setTimeout(() => {
+                        submitBtn.textContent = 'Request Reservation';
+                        submitBtn.disabled = false;
+                        
+                        statusMessage.textContent = `Thank you, ${nameInput.value}. Your reservation request for ${dateInput.value} has been received. Our concierge will reach out via email shortly.`;
+                        statusMessage.className = 'status-message success';
+                        
+                        contactForm.reset();
+                    }, 1200);
+                });
+            }
+
+            // Interactive dish requests
+            const orderBtns = document.querySelectorAll('.order-btn');
+            orderBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const dish = e.currentTarget.getAttribute('data-dish');
+                    const messageArea = document.getElementById('message');
+                    if (messageArea && dish) {
+                        messageArea.value = `Interested in requesting: ${dish}`;
+                        const contactSection = document.getElementById('contact');
+                        if (contactSection) {
+                            contactSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                        showToast(`Added "${dish}" to your reservation notes.`);
+                    }
+                });
+            });
+
+            // Social & Info Action Buttons
+            const socialBtns = document.querySelectorAll('.social-btn');
+            socialBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const platform = e.currentTarget.getAttribute('data-platform');
+                    showToast(`Follow The Grand Oak on ${platform} @TheGrandOakFineDining`);
+                });
+            });
+
+            const infoActions = document.querySelectorAll('.info-action');
+            infoActions.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const topic = e.currentTarget.getAttribute('data-topic');
+                    showToast(`${topic}: Please contact concierge@thegrandoak.com for details.`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
